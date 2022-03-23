@@ -1,22 +1,19 @@
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next';
-import { useRouter } from "next/router"
 
+import { pokeApi } from '../../api';
+import { Pokemon } from '../../interfaces';
 import { Layout } from "../../components/layouts"
 
 
 interface Props {
-    id: string;
-    name: string;
+    pokemon: Pokemon;
 }
 
-const PokemonPage: NextPage<Props> = ({ id, name }) => {
-
-    const router = useRouter()
-    console.log(router.query)
+const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 
     return (
         <Layout title='algun pokemon'>
-            <h1>{id} - {name}</h1>
+            <h1>{pokemon.name}</h1>
         </Layout>
     )
 }
@@ -25,30 +22,25 @@ const PokemonPage: NextPage<Props> = ({ id, name }) => {
 //se ejecuta serverside y en buildtime
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
+    // contiene un array de 1 a 151
+    const pokemons151 = [...Array(151)].map((value, index) => `${index + 1}`)
+    //por cada id se crea un path y fallback:false para que solo acceda al num de paths
     return {
-        paths: [
-            {
-                params: {
-                    id: '1'
-                }
-            }
-        ],
+        paths: pokemons151.map(id => ({ params: { id } })),
         fallback: false
     }
 }
 
 // it runs on server side and only at build time and it is only used in pages
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
 
+    const { id } = params as { id: string }
     //tipado estricto para la llamada a la API
-    // const { data: { results } } = await pokeApi.get<PokemonListResponse>('/pokemon/?limit=151')
-    //agregamos un id y img por cada pokemon
-
-
+    const { data } = await pokeApi.get<Pokemon>(`/pokemon/${id}`)
+    //regresa data de pokemon deacuerdo al id
     return {
         props: {  //las props las manda al cliente
-            id: 1,
-            name: 'Bulbasaur'
+            pokemon: data
         }
     }
 }
