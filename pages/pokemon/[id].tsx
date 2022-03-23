@@ -1,9 +1,12 @@
-import { GetStaticProps, GetStaticPaths, NextPage } from 'next';
+import { useState } from 'react';
 
+import { GetStaticProps, GetStaticPaths, NextPage } from 'next';
+import { Button, Card, Container, Grid, Image, Text } from '@nextui-org/react';
+
+import { favoritesStorage } from '../../utilities';
 import { pokeApi } from '../../api';
 import { Pokemon } from '../../interfaces';
 import { Layout } from "../../components/layouts"
-import { Button, Card, Container, Grid, Image, Text } from '@nextui-org/react';
 
 
 interface Props {
@@ -12,8 +15,17 @@ interface Props {
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 
+    const [isInFavorites, setIsInFavorites] = useState(favoritesStorage.existPokemon(pokemon.id));
+
+    const onToggleFavorite = () => {
+        favoritesStorage.toggleFavorite(pokemon.id)
+        setIsInFavorites(!isInFavorites)
+    }
+    //NOTE: serverside no tiene acceso al window
+    // console.log({ existewindow: typeof window });
+
     return (
-        <Layout title='algun pokemon'>
+        <Layout title={pokemon.name}>
 
             <Grid.Container css={{ marginTop: '5px' }} gap={2}>
                 <Grid xs={12} sm={4}>
@@ -35,9 +47,10 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                             <Text h1 transform='capitalize'>{pokemon.name}</Text>
                             <Button
                                 color='gradient'
-                                ghost
+                                ghost={!isInFavorites}
+                                onClick={onToggleFavorite}
                             >
-                                Guardar en favoritos
+                                {isInFavorites ? 'En favoritos' : 'Guardar en favoritos'}
                             </Button>
                         </Card.Header>
 
@@ -73,7 +86,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 }
 
 
-// You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes [id]
+//NOTE: You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes [id]
 //se ejecuta serverside y en buildtime
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
@@ -86,7 +99,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     }
 }
 
-// it runs on server side and only at build time and it is only used in pages
+//NOTE: it runs on server side and only at build time and it is only used in pages
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const { id } = params as { id: string }

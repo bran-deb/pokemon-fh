@@ -19,7 +19,8 @@ export const Navbar = () => {
             backgroundColor: theme?.colors.gray900.value
         }}>
 
-            <Image  //to consume the image of domain, configure next.config
+            <Image
+                //NOTE: to consume the image of domain, configure next.config
                 src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png"
                 alt="icono de la app"
                 width={70}
