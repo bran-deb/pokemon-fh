@@ -1,0 +1,1 @@
+export {default as favoritesStorage} from './favoritesStorage.utility'

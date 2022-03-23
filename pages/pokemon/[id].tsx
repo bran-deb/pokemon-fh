@@ -1,9 +1,10 @@
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next';
+import { Button, Card, Container, Grid, Image, Text } from '@nextui-org/react';
 
+import { favoritesStorage } from '../../utilities';
 import { pokeApi } from '../../api';
 import { Pokemon } from '../../interfaces';
 import { Layout } from "../../components/layouts"
-import { Button, Card, Container, Grid, Image, Text } from '@nextui-org/react';
 
 
 interface Props {
@@ -12,8 +13,14 @@ interface Props {
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 
+    const onToggleFavorite = () => {
+        favoritesStorage.toggleFavorite(pokemon.id)
+    }
+    //serverside no tiene acceso al window
+    // console.log({ existewindow: typeof window });
+
     return (
-        <Layout title='algun pokemon'>
+        <Layout title={pokemon.name}>
 
             <Grid.Container css={{ marginTop: '5px' }} gap={2}>
                 <Grid xs={12} sm={4}>
@@ -36,6 +43,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                             <Button
                                 color='gradient'
                                 ghost
+                                onClick={onToggleFavorite}
                             >
                                 Guardar en favoritos
                             </Button>
