@@ -21,9 +21,15 @@ const existPokemon = (id: number): Boolean => {
     return favorites.includes(id)  //true/false
 }
 
+const getPokemons = (): number[] => {
+    //NOTE: para no tener el error del serverside se lo manda por un useeffect
+    return JSON.parse(localStorage.getItem('favorites') || '[]')
+}
+
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     toggleFavorite,
     existPokemon,
+    getPokemons,
 }
