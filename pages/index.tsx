@@ -20,8 +20,7 @@ const HomePage: NextPage<Props> = ({ pokemons }) => {
   )
 }
 
-//TODO:
-// it runs on server side and only at build time and it is only used in pages
+//NOTE: it runs on server side and only at build time and it is only used in pages
 export const getStaticProps: GetStaticProps = async (ctx) => {
 
   //tipado estricto para la llamada a la API
