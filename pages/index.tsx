@@ -14,11 +14,9 @@ interface Props {
 const HomePage: NextPage<Props> = ({ pokemons }) => {
 
   return (
-    <>
-      <Layout title='listado de pokemons'>
-        <PokemonList pokemons={pokemons} />
-      </Layout>
-    </>
+    <Layout title='listado de pokemons'>
+      <PokemonList pokemons={pokemons} />
+    </Layout>
   )
 }
 
@@ -34,9 +32,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     id: i + 1,
     img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${i + 1}.svg`
   }))
-
+  //las props las manda al cliente
   return {
-    props: {  //las props las manda al cliente
+    props: {
       pokemons
     }
   }
