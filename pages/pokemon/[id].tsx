@@ -9,6 +9,7 @@ import { favoritesStorage } from '../../utilities';
 import { pokeApi } from '../../api';
 import { Pokemon } from '../../interfaces';
 import { Layout } from "../../components/layouts"
+import { getPokemonInfo } from '../../adapters';
 
 
 interface Props {
@@ -120,12 +121,10 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const { id } = params as { id: string }
-    //tipado estricto para la llamada a la API
-    const { data } = await pokeApi.get<Pokemon>(`/pokemon/${id}`)
     //regresa data de pokemon deacuerdo al id
     return {
         props: {  //las props las manda al cliente
-            pokemon: data
+            pokemon: await getPokemonInfo(id)
         }
     }
 }
