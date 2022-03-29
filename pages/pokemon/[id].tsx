@@ -113,7 +113,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     //por cada id se crea un path y fallback:false para que solo acceda al num de paths
     return {
         paths: pokemons151.map(id => ({ params: { id } })),
-        fallback: false
+        fallback: 'blocking'
     }
 }
 
@@ -122,10 +122,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const { id } = params as { id: string }
     //regresa data de pokemon deacuerdo al id
+    const pokemon = await getPokemonInfo(id)
+    //permanent false in case you update api
+    if (!pokemon) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
     return {
         props: {  //las props las manda al cliente
-            pokemon: await getPokemonInfo(id)
-        }
+            pokemon
+        },
+        //NOTE: Incremental Static Regeneration
+        //next.js attempt to  re-generate the page:
+        revalidate: 86400,//= 60s * 60m * 24h
     }
 }
 
