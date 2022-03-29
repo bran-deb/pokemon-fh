@@ -16,7 +16,7 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
 
     //NOTE: navegacion con useRouter next
     const handleRouter = () => {
-        router.push(`/pokemon/${id}`)
+        router.push(`/name/${name}`)
     }
 
     return (
