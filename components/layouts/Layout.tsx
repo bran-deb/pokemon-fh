@@ -3,12 +3,11 @@ import Head from "next/head"
 
 import { Navbar } from '../ui';
 
-//NOTE: verificar el window en el backend
-const origin = (typeof window === 'undefined') ? '' : window.location.origin
-
 interface Props {
     title?: string;
 }
+//NOTE: verificar el window en el backend
+const origin = (typeof window === 'undefined') ? '' : window.location.origin
 
 export const Layout: FC<Props> = ({ children, title }) => {
 
@@ -21,8 +20,8 @@ export const Layout: FC<Props> = ({ children, title }) => {
                 <meta name="keywords" content={`esta es la pagina sobre ${title}`} />
 
                 <meta property="og:title" content={`Informacion sobre ${title}`} />
-                <meta property="og:description" content="Get from SEO newbie to SEO pro in 8 simple steps." />
-                <meta property="og:image" content={`${origin}/img/banner.png`} />
+                <meta property="og:description" content={`Esta es la pagina de ${title}`} />
+                <meta property="og:image" content={`${origin}/img/bannerPokemon.png`} />
             </Head>
 
             <Navbar />
